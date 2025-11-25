@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sääseek</title>
+  <link rel="stylesheet" href="css/style.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400&family=Oswald:wght@700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/frappe-charts@1.2.4/dist/frappe-charts.min.iife.js"></script>
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+  <div class="app-container">
+    <h1>Sääseek</h1>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <input type="text" id="cityInput" placeholder="Enter city name..." />
+        <button id="searchBtn">Search</button>
+        <button id="geoBtn">My Location</button>
+      </div>
+
+      <div class="controls">
+        <label class="unit">
+          Unit:
+          <select id="unitSelect">
+            <option value="C">°C</option>
+            <option value="F">°F</option>
+            <option value="K">K</option>
+          </select>
+        </label>
+
+        <div class="favorites">
+          <button id="favBtn" title="Add to favorites">Save</button>
+          <select id="favSelect">
+            <option value="">Favorites…</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current weather -->
+    <div id="weatherResult" class="weather-card">
+      <h2 id="cityName" class="placeholder">Search your city</h2>
+      <img id="weatherIcon" src="https://openweathermap.org/img/wn/02d@4x.png" alt="Weather Icon" />
+      <p id="description" class="placeholder">Find out today's weather</p>
+      <p id="temperature" class="placeholder">--</p>
+    <!--My own feature: PM.5-->
+      <p id="aqiLine" class="placeholder">PM2.5: -- μg/m³</p>
+
+    </div>
+    <!-- 24h line -->
+    <h3>24-hour Temperature Comparison</h3>
+    <div class="chart-actions">
+      <button id="btnCsv">Export 24h CSV</button>
+    </div>
+
+    <div id="chart"></div>
+
+    <!-- 24h houly -->
+    <h3>Next 24 hours</h3>
+    <div class="hourly-scroll" id="hourlyScroll"></div>
+
+    <!-- 7 days -->
+    <h3>Next 7 days</h3>
+    <div class="daily-scroll" id="forecastContainer"></div>
+
+    <p class="note">
+      * OpenWeather provides 3-hour interval forecast, Open-Meteo provides hourly forecast.
+      The chart interpolates OpenWeather to hourly to compare both sources over the next 24h.
+    </p>
+
+    <footer>
+      <p>Data Sources: OpenWeather & Open-Meteo & MET Norwey</p>
+    </footer>
+  </div>
+</body>
+</html>
