@@ -48,14 +48,15 @@ The project focuses on **clean UI**, **API integration**, and **data visualizati
 
 ## 🖼️ Screenshots
 
-### 🔹 Main Interface
+### 🔹 Initial home page
+<img src="assets/screenshot3.png" width="700"/>
+
+### 🔹 Main Interface at night
 <img src="assets/screenshot1.png" width="700"/>
 
-### 🔹 City Weather Overview
+### 🔹 Main interface at day
 <img src="assets/screenshot2.png" width="700"/>
 
-### 🔹 24-Hour Temperature Comparison Chart
-<img src="assets/screenshot3.png" width="700"/>
 
 ---
 
@@ -75,8 +76,4 @@ The project focuses on **clean UI**, **API integration**, and **data visualizati
 - JSON parsing  
 - Async fetch pipelines  
 - CSV generation  
-
----
-
-## 📦 Project Structure
 
