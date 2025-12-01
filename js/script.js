@@ -1,5 +1,5 @@
 const CLEAR_FAVORITES_ON_LOAD = true;  // empty favorites every time refresh web page
-const API_KEY = "b64a5666f8d86f2b18046b7124b71c43"; 
+const API_KEY = "***";//Add API key from OpenWeather to get data!! 
 
 let UNIT = "C"; 
 let chart = null;    // Frappe chart instance
