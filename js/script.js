@@ -230,6 +230,8 @@ function draw24hChartHourly(owAll, meteoHourly){
     const h = String(d.getUTCHours()).padStart(2,'0');
     return `${y}-${m}-${day}T${h}`;
   }
+
+  //interporate 3 hour data to hourly data in 24 hours
   const owMap = new Map();
   for (let i=0; i<list.length-1; i++){
     const a = list[i], b = list[i+1];
@@ -245,6 +247,8 @@ function draw24hChartHourly(owAll, meteoHourly){
     owMap.set(keyFromLocalSec(nextLocal), v1);
   }
 
+
+  //Find the match in the 48h data provided by Open-Meteo
   const H = Math.min(48, allTimes.length);
   let bestStart = 0, bestCount = -1;
   for (let s=0; s<=H-24; s++){
@@ -257,10 +261,17 @@ function draw24hChartHourly(owAll, meteoHourly){
     if (cnt > bestCount){ bestCount = cnt; bestStart = s; }
   }
 
+  //Take out the final data used for drawing
   const omTimes = allTimes.slice(bestStart, bestStart+24);
   const omC     = allTemps.slice(bestStart, bestStart+24);
 
+
+  //Generate time labels used in the x-axis
   const labels = omTimes.map(s => s.slice(11,13) + ":00");
+
+  //For each hour, first use "YYYY-MM-DDTHH" as key to find temperature in owMAP
+  //If cannot find, shft 1/2/3 hours for other values
+  //If still cannot find, target it as null
   const owValsRaw = omTimes.map(k0 => {
     const k = k0.slice(0,13);
     if (owMap.has(k)) return owMap.get(k);
@@ -271,25 +282,33 @@ function draw24hChartHourly(owAll, meteoHourly){
     return null;
   });
 
+
+  //Filling null with reasonable balue
+  //Left to right, Find the first value that is not null, as "prev"
   let prev = null;
   for (let i=0;i<owValsRaw.length;i++){
     if (owValsRaw[i]==null) continue;
     prev = owValsRaw[i]; break;
   }
+  //Fill the first "null" with "prev"'s value
   for (let i=0;i<owValsRaw.length;i++){
     if (owValsRaw[i]==null) owValsRaw[i] = prev;
     else prev = owValsRaw[i];
   }
+
+  //Right to left, find the first value that is not null, as "next"
   let next = null;
   for (let i=owValsRaw.length-1;i>=0;i--){
     if (owValsRaw[i]==null) continue;
     next = owValsRaw[i]; break;
   }
+  //Fill the first "null" with "next"'s value
   for (let i=owValsRaw.length-1;i>=0;i--){
     if (owValsRaw[i]==null) owValsRaw[i] = next;
     else next = owValsRaw[i];
   }
 
+  //If there's still null, set it as 0
   for (let i=0;i<owValsRaw.length;i++){
     if (owValsRaw[i]==null) owValsRaw[i] = 0;
   }
@@ -303,7 +322,10 @@ function draw24hChartHourly(owAll, meteoHourly){
     { name:"Open-Meteo",  values: meteoVals }
   ];
 
+  //Destroy old chart before deawing new one
   if (chart && typeof chart.destroy === "function"){ chart.destroy(); chart = null; }
+
+  //Drawing the final graph
   chart = new frappe.Chart("#chart", {
     title:"24h Temperature Comparison",
     data:{ labels: lastLabels, datasets: currentDatasets },
